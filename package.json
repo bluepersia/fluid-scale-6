@@ -1,0 +1,24 @@
+{
+  "name": "fluid-scale",
+  "version": "0.2.0",
+  "description": "A JS fluid interpolator for CSS",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bluepersia/fluid-scale-6.git"
+  },
+  "author": "Marco Enrique Zimmermann",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bluepersia/fluid-scale-6/issues"
+  },
+  "homepage": "https://github.com/bluepersia/fluid-scale-6#readme",
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "eslint": "^9.36.0",
+    "typescript": "^5.9.2"
+  }
+}
