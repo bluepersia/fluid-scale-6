@@ -23,9 +23,11 @@ describe("clone document", () => {
     const page = playwrightPages[index].page;
     const assertionResponses = await page.evaluate((master) => {
       // @ts-expect-error global from IIFE bundle
+      window.clonerWrapReset(master);
+      // @ts-expect-error global from IIFE bundle
       window.assertionResponses = [];
       // @ts-expect-error global from IIFE bundle
-      window.cloneDocument(document, master);
+      window.cloneDocument(document);
 
       // @ts-expect-error global from IIFE bundle
       return window.assertionResponses;
@@ -34,7 +36,8 @@ describe("clone document", () => {
     for (const res of assertionResponses) {
       const assertions = cloneDocumentAssertionChain[res.name];
       for (const assertion of Object.values(assertions)) {
-        (assertion as (data: typeof res) => void)(res);
+        const assertionTyped = assertion as (data: typeof res) => void;
+        assertionTyped(res);
       }
     }
   });

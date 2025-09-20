@@ -1,15 +1,16 @@
-import { Master } from "../eau-de-parfum/master/master";
+import { Master } from "../../../shared/index.types";
 
-type AssertionResponse<TArgs, TResult> = {
+type AssertionResponse<TArgs, TResult, TState> = {
   args?: TArgs;
   master?: Master;
   testArg?: any;
   result?: TResult;
   name: string;
+  state?: TState;
 };
 
-type DefaultAssertions<TArgs, TResult> = {
-  [key: string]: (res: AssertionResponse<TArgs, TResult>) => void;
+type DefaultAssertions<TArgs, TResult, TState> = {
+  [key: string]: (res: AssertionResponse<TArgs, TResult, TState>) => void;
 };
 
 export type { DefaultAssertions };

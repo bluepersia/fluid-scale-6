@@ -45,7 +45,7 @@ const FLUID_PROPERTY_NAMES = new Set<string>([
   "bottom",
   "object-position",
 ]);
-function cloneDocument(doc: Document): DocumentClone {
+let cloneDocument = (doc: Document): DocumentClone => {
   const docClone: DocumentClone = {
     styleSheets: [],
   };
@@ -55,11 +55,11 @@ function cloneDocument(doc: Document): DocumentClone {
   }
 
   return docClone;
-}
+};
 
-function filterAccessibleStyleSheets(
+let filterAccessibleStyleSheets = (
   styleSheets: StyleSheetList
-): CSSStyleSheet[] {
+): CSSStyleSheet[] => {
   return Array.from(styleSheets).filter((styleSheet) => {
     try {
       const rules = styleSheet.cssRules;
@@ -68,9 +68,9 @@ function filterAccessibleStyleSheets(
       return false;
     }
   });
-}
+};
 
-function cloneStyleSheet(sheet: CSSStyleSheet): StyleSheetClone {
+let cloneStyleSheet = (sheet: CSSStyleSheet): StyleSheetClone => {
   const sheetClone: StyleSheetClone = {
     cssRules: [],
   };
@@ -81,18 +81,18 @@ function cloneStyleSheet(sheet: CSSStyleSheet): StyleSheetClone {
   }
 
   return sheetClone;
-}
+};
 
-function cloneRule(rule: CSSRule): RuleClone | null {
+let cloneRule = (rule: CSSRule): RuleClone | null => {
   if (rule.type === 1) return cloneStyleRule(rule as CSSStyleRule);
   if (rule.type === 4) {
     const mediaRule = cloneMediaRule(rule as CSSMediaRule);
     if (mediaRule) return mediaRule;
   }
   return null;
-}
+};
 
-function cloneStyleRule(rule: CSSStyleRule): StyleRuleClone {
+let cloneStyleRule = (rule: CSSStyleRule): StyleRuleClone => {
   const style: Record<string, string> = {};
 
   for (let i = 0; i < rule.style.length; i++) {
@@ -107,9 +107,9 @@ function cloneStyleRule(rule: CSSStyleRule): StyleRuleClone {
     specialProps: {},
     selectorText: rule.selectorText,
   };
-}
+};
 
-function cloneMediaRule(rule: CSSMediaRule): MediaRuleClone | null {
+let cloneMediaRule = (rule: CSSMediaRule): MediaRuleClone | null => {
   // Regex explanation: matches (min-width: <number>px)
   const match = rule.media.mediaText.match(/\(min-width:\s*(\d+)px\)/);
 
@@ -123,6 +123,30 @@ function cloneMediaRule(rule: CSSMediaRule): MediaRuleClone | null {
     };
   }
   return null;
+};
+
+//---------//
+//TEST WRAPPING//
+//--------//
+function wrap(
+  cloneDocWrapped: (doc: Document) => DocumentClone,
+  cloneStyleSheetWrapped: (sheet: CSSStyleSheet) => StyleSheetClone,
+  cloneRuleWrapped: (rule: CSSRule) => RuleClone | null,
+  cloneStyleRuleWrapped: (styleRule: CSSStyleRule) => StyleRuleClone,
+  cloneMediaRuleWrapped: (mediaRule: CSSMediaRule) => MediaRuleClone | null
+) {
+  cloneDocument = cloneDocWrapped;
+  cloneStyleSheet = cloneStyleSheetWrapped;
+  cloneRule = cloneRuleWrapped;
+  cloneStyleRule = cloneStyleRuleWrapped;
+  cloneMediaRule = cloneMediaRuleWrapped;
 }
 
-export { cloneDocument };
+export {
+  cloneDocument,
+  cloneStyleSheet,
+  cloneRule,
+  cloneStyleRule,
+  cloneMediaRule,
+  wrap,
+};

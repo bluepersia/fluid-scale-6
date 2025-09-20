@@ -7,7 +7,7 @@
     "build:types": "tsc -p tsconfig.json",
     "build:bundle": "node ./scripts/build-bundle.mjs",
     "build": "npm run build:types && npm run build:bundle",
-    "test": "npm run build && vitest --run --reporter verbose"
+    "test": "npm run build && vitest --run --reporter verbose --printConsole"
   },
   "repository": {
     "type": "git",

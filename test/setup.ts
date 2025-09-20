@@ -38,6 +38,9 @@ async function initPlaywrightPages(): Promise<PlaywrightPage[]> {
       await page.evaluate(() => {
         // @ts-expect-error global from IIFE bundle
         window.cloneDocument = window.FluidScale.cloneDocument;
+
+        // @ts-expect-error global from IIFE bundle
+        window.clonerWrapReset = window.FluidScale.clonerWrapReset;
       });
 
       return { page, browser };

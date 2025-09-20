@@ -6,7 +6,7 @@ import fs from "fs";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const entry = path.resolve(__dirname, "../bundle.ts");
+const entry = path.resolve(__dirname, "../bundle/bundle.ts");
 const outfile = path.resolve(__dirname, "../dist/bundle.js");
 
 fs.rmSync(outfile, { force: true });

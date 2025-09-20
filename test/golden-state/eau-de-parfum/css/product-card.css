@@ -4,6 +4,7 @@
   max-width: 24.5rem;
   border-bottom-left-radius: 0.71rem;
   border-bottom-right-radius: 0.71rem;
+  --sheetId: "product-card";
 }
 
 .product-card__img--desktop {

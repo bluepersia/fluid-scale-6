@@ -1,5 +1,6 @@
 :root {
   --color-green: #3d8168;
+  --sheetId: "global-styles";
 }
 
 html {
