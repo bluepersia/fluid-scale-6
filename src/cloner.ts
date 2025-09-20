@@ -9,56 +9,65 @@ import {
 } from "./cloner.types";
 
 const FLUID_PROPERTY_NAMES = new Set<string>([
-  "fontSize",
-  "lineHeight",
-  "letterSpacing",
-  "wordSpacing",
-  "textIndent",
-  "paddingTop",
-  "paddingRight",
-  "paddingBottom",
-  "paddingLeft",
-  "marginTop",
-  "marginRight",
-  "marginBottom",
-  "marginLeft",
-  "borderTopWidth",
-  "borderRightWidth",
-  "borderBottomWidth",
-  "borderLeftWidth",
-  "borderTopLeftRadius",
-  "borderTopRightRadius",
-  "borderBottomRightRadius",
-  "borderBottomLeftRadius",
+  "font-size",
+  "line-height",
+  "letter-spacing",
+  "word-spacing",
+  "text-indent",
   "width",
-  "minWidth",
-  "maxWidth",
+  "min-width",
+  "max-width",
   "height",
-  "minHeight",
-  "maxHeight",
-  "gridTemplateColumns",
-  "gridTemplateRows",
-  "backgroundPositionX",
-  "backgroundPositionY",
+  "min-height",
+  "max-height",
+  "grid-template-columns",
+  "grid-template-rows",
+  "background-position-x",
+  "background-position-y",
+  "padding-top",
+  "padding-right",
+  "padding-bottom",
+  "padding-left",
+  "margin-top",
+  "margin-right",
+  "margin-bottom",
+  "margin-left",
+  "border-top-left-radius",
+  "border-top-right-radius",
+  "border-bottom-right-radius",
+  "border-bottom-left-radius",
+  "column-gap",
+  "row-gap",
   "--fluid-bg-size",
   "top",
   "left",
   "right",
   "bottom",
-  "columnGap",
-  "rowGap",
+  "object-position",
 ]);
-
 function cloneDocument(doc: Document): DocumentClone {
   const docClone: DocumentClone = {
     styleSheets: [],
   };
 
-  for (const sheet of Array.from(doc.styleSheets)) {
+  for (const sheet of filterAccessibleStyleSheets(doc.styleSheets)) {
     docClone.styleSheets.push(cloneStyleSheet(sheet));
   }
 
   return docClone;
+}
+
+function filterAccessibleStyleSheets(
+  styleSheets: StyleSheetList
+): CSSStyleSheet[] {
+  return Array.from(styleSheets).filter((styleSheet) => {
+    try {
+      const rules = styleSheet.cssRules;
+      return rules ? true : false;
+    } catch (error) {
+      return false;
+    }
+  });
 }
 
 function cloneStyleSheet(sheet: CSSStyleSheet): StyleSheetClone {
@@ -115,3 +124,5 @@ function cloneMediaRule(rule: CSSMediaRule): MediaRuleClone | null {
   }
   return null;
 }
+
+export { cloneDocument };

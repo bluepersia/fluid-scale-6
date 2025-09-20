@@ -4,7 +4,10 @@
   "description": "A JS fluid interpolator for CSS",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build:types": "tsc -p tsconfig.json",
+    "build:bundle": "node ./scripts/build-bundle.mjs",
+    "build": "npm run build:types && npm run build:bundle",
+    "test": "npm run build && vitest --run --reporter verbose"
   },
   "repository": {
     "type": "git",
@@ -18,7 +21,10 @@
   "homepage": "https://github.com/bluepersia/fluid-scale-6#readme",
   "devDependencies": {
     "@types/node": "^24.5.2",
+    "esbuild": "^0.25.10",
     "eslint": "^9.36.0",
-    "typescript": "^5.9.2"
+    "playwright": "^1.55.0",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
   }
 }
