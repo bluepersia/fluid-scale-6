@@ -1,19 +1,23 @@
 import { describe, test, expect, beforeAll, afterAll } from "vitest";
-import { initPlaywrightPages, teardownPlaywrightPages } from "./setup";
-import { PlaywrightPage } from "./index.types";
+import { initPlaywrightPages, teardownPlaywrightPages } from "../setup";
+import { PlaywrightPage } from "../index.types";
 import {
   cloneDocumentAssertionChain,
-  AssertionName,
-} from "./golden-state/assertions/cloner";
-import masterProject1 from "./golden-state/eau-de-parfum/master/master";
-import { JSDOMDocs } from "./setup";
+  CloneDocumentAssertionName,
+} from "../golden-state/assertions/cloner";
+import masterProject1 from "../golden-state/eau-de-parfum/master/master";
+import { JSDOMDocs } from "../setup";
 import {
   AssertionResponse,
   getResponses,
   resetResponses,
-} from "./golden-state/assertions/global";
-import * as clonerAssertions from "./golden-state/assertions/cloner";
-import { cloneDocument, normalizeSelector, normalizeZero } from "../src/cloner";
+} from "../golden-state/assertions/global";
+import * as clonerAssertions from "../golden-state/assertions/cloner";
+import {
+  cloneDocument,
+  normalizeSelector,
+  normalizeZero,
+} from "../../src/parse/cloner/cloner";
 
 const JSDOMDocsWithIndex = JSDOMDocs.map((doc, index) => ({
   index: index,
@@ -50,7 +54,8 @@ describe("clone document", () => {
     }, master);
 
     for (const res of assertionResponses) {
-      const assertions = cloneDocumentAssertionChain[res.name as AssertionName];
+      const assertions =
+        cloneDocumentAssertionChain[res.name as CloneDocumentAssertionName];
       for (const assertion of Object.values(assertions)) {
         assertion(res);
       }
@@ -72,7 +77,7 @@ describe("clone document", () => {
 
       for (const res of responses) {
         const assertions =
-          cloneDocumentAssertionChain[res.name as AssertionName];
+          cloneDocumentAssertionChain[res.name as CloneDocumentAssertionName];
         for (const assertion of Object.values(assertions)) {
           assertion(res);
         }

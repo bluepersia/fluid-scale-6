@@ -4,8 +4,9 @@ import { fileURLToPath } from "url";
 import { PlaywrightPage } from "./index.types";
 import { generateJSDOMDocument } from "../src/json-builder";
 import { wrapAll as wrapAllCloner } from "./golden-state/assertions/cloner";
-
+import { wrapAll as wrapAllParse } from "./golden-state/assertions/parse";
 wrapAllCloner();
+wrapAllParse();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

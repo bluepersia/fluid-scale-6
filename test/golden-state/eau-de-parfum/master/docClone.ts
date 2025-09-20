@@ -2,7 +2,7 @@ import {
   DocumentClone,
   MediaRuleClone,
   StyleRuleClone,
-} from "../../../../src/cloner.types";
+} from "../../../../src/parse/cloner/cloner.types";
 
 const docClone: DocumentClone = {
   styleSheets: [

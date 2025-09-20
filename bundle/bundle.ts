@@ -1,4 +1,4 @@
-import * as cloner from "../src/cloner";
+import * as cloner from "../src/parse/cloner/cloner";
 import * as clonerAssertions from "../test/golden-state/assertions/cloner";
 import {
   resetResponses,

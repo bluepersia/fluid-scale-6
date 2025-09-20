@@ -1,4 +1,4 @@
-import { Master } from "../../../shared/index.types";
+import { Master } from "../../index.types";
 
 type AssertionResponse<TArgs, TResult, TState> = {
   args?: TArgs;

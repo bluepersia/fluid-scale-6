@@ -1,5 +1,8 @@
-import { StyleRuleClone, MediaRuleClone } from "../../../src/cloner.types";
-import { DocumentClone } from "../../../src/cloner.types";
+import {
+  StyleRuleClone,
+  MediaRuleClone,
+} from "../../../src/parse/cloner/cloner.types";
+import { DocumentClone } from "../../../src/parse/cloner/cloner.types";
 
 function findStyleRuleByAbsIndex(
   docClone: DocumentClone,

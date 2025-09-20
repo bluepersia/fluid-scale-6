@@ -1,12 +1,12 @@
 import { expect } from "vitest";
-import { Master } from "../../../shared/index.types";
+import { Master } from "../../index.types";
 import {
   DocumentClone,
   MediaRuleClone,
   RuleClone,
   StyleRuleClone,
   StyleSheetClone,
-} from "../../../src/cloner.types";
+} from "../../../src/parse/cloner/cloner.types";
 import { DefaultAssertions } from "./index.types";
 import {
   wrap,
@@ -16,7 +16,7 @@ import {
   cloneStyleRule,
   cloneMediaRule,
   handleShorthand,
-} from "../../../src/cloner";
+} from "../../../src/parse/cloner/cloner";
 import { findMediaRuleByAbsIndex, findStyleRuleByAbsIndex } from "./docClone";
 import { getResponses } from "./global";
 
@@ -97,7 +97,7 @@ const cloneDocumentAssertionChain = {
   cloneMediaRule: cloneMediaRuleAssertions,
   handleShorthand: handleShorthandAssertions,
 };
-type AssertionName = keyof typeof cloneDocumentAssertionChain;
+type CloneDocumentAssertionName = keyof typeof cloneDocumentAssertionChain;
 //
 //TEST WRAPPERS
 //--------------------------------------------
@@ -225,5 +225,5 @@ export {
   cloneDocumentAssertionChain,
   wrapAll,
   resetWrapState,
-  AssertionName,
+  CloneDocumentAssertionName,
 };
