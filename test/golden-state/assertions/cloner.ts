@@ -15,8 +15,10 @@ import {
   cloneRule,
   cloneStyleRule,
   cloneMediaRule,
+  handleShorthand,
 } from "../../../src/cloner";
 import { findMediaRuleByAbsIndex, findStyleRuleByAbsIndex } from "./docClone";
+import { getResponses } from "./global";
 
 type State = {
   sheetIndex: number;
@@ -74,14 +76,28 @@ const cloneMediaRuleAssertions: DefaultAssertions<CSSRule, RuleClone, State> = {
   },
 };
 
+const handleShorthandAssertions: DefaultAssertions<
+  string,
+  Record<string, string>,
+  State
+> = {
+  "should handle shorthand": ({ result, state }) => {
+    expect(
+      findStyleRuleByAbsIndex(state!.master.docClone, state!.absStyleRuleIndex)
+        .style
+    ).toMatchObject(result!);
+  },
+};
+
 const cloneDocumentAssertionChain = {
   cloneDocument: cloneDocumentAssertions,
   cloneStyleSheet: cloneStyleSheetAssertions,
   cloneRule: cloneRuleAssertions,
   cloneStyleRule: cloneStyleRuleAssertions,
   cloneMediaRule: cloneMediaRuleAssertions,
+  handleShorthand: handleShorthandAssertions,
 };
-
+type AssertionName = keyof typeof cloneDocumentAssertionChain;
 //
 //TEST WRAPPERS
 //--------------------------------------------
@@ -92,7 +108,8 @@ function wrapAll() {
     wrapCloneStyleSheet(cloneStyleSheet),
     wrapCloneRule(cloneRule),
     wrapCloneStyleRule(cloneStyleRule),
-    wrapCloneMediaRule(cloneMediaRule)
+    wrapCloneMediaRule(cloneMediaRule),
+    wrapHandleShorthand(handleShorthand)
   );
 }
 
@@ -117,7 +134,7 @@ function wrapCloneDocument(
   return (doc: Document) => {
     wrapState.sheetIndex = 0;
     const result = cloneDocument(doc);
-    (window as any).assertionResponses.push({
+    getResponses().push({
       state: { ...wrapState },
       result,
       name: "cloneDocument",
@@ -132,7 +149,7 @@ function wrapCloneStyleSheet(
   return (styleSheet: CSSStyleSheet) => {
     wrapState.ruleIndex = 0;
     const result = cloneStyleSheet(styleSheet);
-    (window as any).assertionResponses.push({
+    getResponses().push({
       state: { ...wrapState },
       result,
       name: "cloneStyleSheet",
@@ -146,7 +163,7 @@ function wrapCloneStyleSheet(
 function wrapCloneRule(cloneRule: (rule: CSSRule) => RuleClone | null) {
   return (rule: CSSRule) => {
     const result = cloneRule(rule);
-    (window as any).assertionResponses.push({
+    getResponses().push({
       state: { ...wrapState },
       result,
       name: "cloneRule",
@@ -161,7 +178,7 @@ function wrapCloneStyleRule(
 ) {
   return (styleRule: CSSStyleRule) => {
     const result = cloneStyleRule(styleRule);
-    (window as any).assertionResponses.push({
+    getResponses().push({
       state: { ...wrapState },
       result,
       name: "cloneStyleRule",
@@ -176,7 +193,7 @@ function wrapCloneMediaRule(
 ) {
   return (mediaRule: CSSMediaRule) => {
     const result = cloneMediaRule(mediaRule);
-    (window as any).assertionResponses.push({
+    getResponses().push({
       state: { ...wrapState },
       result,
       name: "cloneMediaRule",
@@ -186,9 +203,27 @@ function wrapCloneMediaRule(
   };
 }
 
+function wrapHandleShorthand(
+  handleShorthand: (
+    shorthandName: string,
+    shorthandValue: string
+  ) => Record<string, string>
+) {
+  return (shorthandName: string, shorthandValue: string) => {
+    const result = handleShorthand(shorthandName, shorthandValue);
+    getResponses().push({
+      state: { ...wrapState },
+      result,
+      name: "handleShorthand",
+    });
+    return result;
+  };
+}
+
 export {
   cloneDocumentAssertions,
   cloneDocumentAssertionChain,
   wrapAll,
   resetWrapState,
+  AssertionName,
 };

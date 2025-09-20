@@ -2,7 +2,10 @@ import { Browser, chromium, Page } from "playwright";
 import path from "path";
 import { fileURLToPath } from "url";
 import { PlaywrightPage } from "./index.types";
-import * as clonerAssertions from "./golden-state/assertions/cloner";
+import { generateJSDOMDocument } from "../src/json-builder";
+import { wrapAll as wrapAllCloner } from "./golden-state/assertions/cloner";
+
+wrapAllCloner();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -18,6 +21,11 @@ const realProjectsData: PlaywrightBlueprint[] = [
     addCss: ["css/global.css", "css/utils.css", "css/product-card.css"],
   },
 ];
+
+const JSDOMDocs = realProjectsData.map(({ htmlFilePath }) => {
+  const finalPath = path.resolve(__dirname, htmlFilePath, "index.html");
+  return generateJSDOMDocument([finalPath]);
+});
 
 async function initPlaywrightPages(): Promise<PlaywrightPage[]> {
   return await Promise.all(
@@ -41,6 +49,12 @@ async function initPlaywrightPages(): Promise<PlaywrightPage[]> {
 
         // @ts-expect-error global from IIFE bundle
         window.clonerWrapReset = window.FluidScale.clonerWrapReset;
+
+        // @ts-expect-error global from IIFE bundle
+        window.resetResponses = window.FluidScale.resetResponses;
+
+        // @ts-expect-error global from IIFE bundle
+        window.getResponses = window.FluidScale.getResponses;
       });
 
       return { page, browser };
@@ -57,4 +71,4 @@ async function teardownPlaywrightPages(
   }
 }
 
-export { initPlaywrightPages, teardownPlaywrightPages };
+export { initPlaywrightPages, teardownPlaywrightPages, JSDOMDocs };

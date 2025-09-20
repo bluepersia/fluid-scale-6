@@ -7,7 +7,7 @@
     "build:types": "tsc -p tsconfig.json",
     "build:bundle": "node ./scripts/build-bundle.mjs",
     "build": "npm run build:types && npm run build:bundle",
-    "test": "npm run build && vitest --run --reporter verbose --printConsole"
+    "test": "npm run build && vitest --run --reporter verbose"
   },
   "repository": {
     "type": "git",
@@ -20,9 +20,11 @@
   },
   "homepage": "https://github.com/bluepersia/fluid-scale-6#readme",
   "devDependencies": {
+    "@types/jsdom": "^21.1.7",
     "@types/node": "^24.5.2",
     "esbuild": "^0.25.10",
     "eslint": "^9.36.0",
+    "jsdom": "^27.0.0",
     "playwright": "^1.55.0",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4"
